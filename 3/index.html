@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>Prime Numbers</h2>
+    <label> Enter first string: <input type="text" id="num1" /> </label>
+    <label> Enter second string: <input type="text" id="num2" /> </label>
+    <button id="btn">Check</button>
+    <div id="result"></div>
+
+    <script>
+      const num1 = document.querySelector('#num1');
+      const num2 = document.querySelector('#num2');
+
+      console.log(num1, num2);
+
+      // check if the string is substring of another string
+      const result = document.getElementById('result');
+      const btn = document.querySelector('#btn');
+      btn.addEventListener('click', () => {
+        const str1 = num1.value;
+        const str2 = num2.value;
+        if (str1 && str2) {
+          result.textContent = '';
+          const found = str2.includes(str1);
+
+          if (found) {
+            result.textContent = 'found';
+          } else {
+            result.textContent = 'Not found';
+          }
+          return;
+        }
+        result.textContent = 'Please enter valid strings';
+      });
+
+      // Check if string1 is substring of string2
+      function isSubstringOf(string1, string2) {
+        for (let i = 0; i < string2.length; i++) {
+          if (string2[i] == string1[0]) {
+            let j = i;
+            for (let k = 0; k < string1.length; k++) {
+              if (string2[j] != string1[k]) {
+                break;
+              }
+              j++;
+            }
+            if (k == string1.length - 1) {
+              return true;
+            }
+          }
+        }
+        return false;
+      }
+    </script>
+  </body>
+</html>
