@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>Prime Numbers</h2>
+    <label> Enter Range From: <input type="text" id="num1" /> </label>
+    <label> Enter Range To: <input type="text" id="num2" /> </label>
+    <button id="btn">Get Prime Numbers</button>
+    <div id="result"></div>
+
+    <script>
+      const num1 = document.querySelector('#num1');
+      const num2 = document.querySelector('#num2');
+      console.log(num1, num2);
+      // Get the result span
+      const result = document.getElementById('result');
+
+      const getPrime = document
+        .querySelector('#btn')
+        .addEventListener('click', () => {
+          const lower = parseInt(num1.value);
+          const higher = parseInt(num2.value);
+
+          if (lower && higher) {
+            result.textContent = '';
+            const primes = primeNumber(lower, higher);
+            console.log(primes);
+
+            for (let temp of primes) {
+              result.textContent += temp + ' ';
+            }
+            return;
+          }
+          result.textContent = 'Please enter valid numbers';
+        });
+
+      // Prime number between two numbers
+      function primeNumber(num1, num2) {
+        let prime = [];
+        for (let i = num1; i <= num2; i++) {
+          let isPrime = true;
+          for (let j = 2; j < i; j++) {
+            if (i % j == 0) {
+              isPrime = false;
+              break;
+            }
+          }
+          if (isPrime) {
+            prime.push(i);
+          }
+        }
+        return prime;
+      }
+    </script>
+  </body>
+</html>
