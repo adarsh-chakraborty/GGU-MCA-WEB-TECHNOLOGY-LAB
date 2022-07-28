@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- Select tag with 10 random options -->
+    <select id="select1"></select>
+    <select id="select2"></select>
+
+    <script>
+      const selectOptions = [
+        'Bilaspur',
+        'Raipur',
+        'Korba',
+        'Dhamtari',
+        'Durg',
+        'Dantewada',
+        'Rajnandgaon',
+        'Bhatapara',
+        'Belha',
+        'Bhilai'
+      ];
+
+      const select1 = document.querySelector('#select1');
+      select1.addEventListener('change', removeOptionFromSelect);
+      const select2 = document.querySelector('#select2');
+
+      // Initial render of select options
+      for (let i = 0; i < selectOptions.length; i++) {
+        const option = document.createElement('option');
+        option.value = selectOptions[i];
+        option.textContent = selectOptions[i];
+        select1.appendChild(option);
+        select2.appendChild(option.cloneNode(true));
+      }
+
+      function removeOptionFromSelect(e) {
+        select2.innerHTML = '';
+        const selectedIndex = select1.options.selectedIndex;
+        const filteredArray = selectOptions.filter((value, index) => {
+          return index !== selectedIndex;
+        });
+        updateOptions(filteredArray);
+      }
+
+      // Receives an array and renders it in a select tag
+      function updateOptions(filteredOptions) {
+        console.log(filteredOptions);
+
+        for (let i = 0; i < filteredOptions.length; i++) {
+          const option = document.createElement('option');
+          option.value = filteredOptions[i];
+          option.textContent = filteredOptions[i];
+          select2.appendChild(option);
+        }
+      }
+    </script>
+  </body>
+</html>
