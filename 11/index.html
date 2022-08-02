@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>List3</title>
+    <style>
+      .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.25rem;
+        gap: 0.5rem;
+      }
+
+      #list {
+        min-height: 5rem;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+        width: 100%;
+        max-width: 100%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.25rem;
+      }
+      .controls {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>My List</h2>
+      <div class="controls">
+        <input type="text" id="txt" />
+        <button id="addbtn">Add</button>
+      </div>
+      <ul id="list"></ul>
+    </div>
+    <div class="pagination"></div>
+
+    <script>
+      const listItems = [];
+      let currentpage = 1;
+
+      const inputBox = document.querySelector('#txt');
+      const list = document.querySelector('#list');
+      const paginationDiv = document.querySelector('.pagination');
+      const addBtn = document
+        .querySelector('#addbtn')
+        .addEventListener('click', addItemToList);
+
+      function addItemToList() {
+        const newItem = inputBox.value.trim();
+        if (newItem) {
+          listItems.push({ index: listItems.length + 1, value: newItem });
+          inputBox.value = '';
+          updateList();
+        }
+      }
+
+      function updateList() {
+        const items = getItemsFromList();
+        list.innerHTML = items
+          .map((item, index) => `<li>${item.index}. ${item.value}</li>`)
+          .join('');
+        getPagination();
+      }
+      function getPagination() {
+        // Number of pagination buttons to render
+        // Total Items / 3
+        const numOfPaginationButtons = Math.ceil(listItems.length / 3);
+        console.log('Num of pagination buttons: ' + numOfPaginationButtons);
+
+        // Create pagination buttons
+        let paginationButtons = '';
+        for (let i = 0; i < numOfPaginationButtons; i++) {
+          const pageIndex = i + 1;
+          paginationButtons += `<button id="${pageIndex}" onClick="paginationHandler(${pageIndex})">${pageIndex}</button>`;
+        }
+        paginationDiv.innerHTML = paginationButtons;
+      }
+
+      function getItemsFromList() {
+        const page_size = 3;
+
+        return listItems.slice(
+          (currentpage - 1) * page_size,
+          currentpage * page_size
+        );
+      }
+
+      function paginationHandler(pageIndex) {
+        currentpage = pageIndex;
+        updateList();
+      }
+    </script>
+  </body>
+</html>

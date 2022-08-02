@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practical 10</title>
+    <style>
+      .container {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="localaddress">
+        <textarea placeholder="Local address" id="txtlocal"></textarea>
+      </div>
+      <button id="togglebtn">></button>
+      <div class="permanent">
+        <textarea placeholder="Permanent address" id="txtperm"></textarea>
+      </div>
+    </div>
+
+    <script>
+      /*
+      
+      Design html page given below:
+
+      ✔️ If we click ">" button, then copy left -> right and button becomes '<'. 
+      If left is empty? otherwise right becomes empty and button comes back to '>'
+      
+      */
+
+      const localAddress = document.querySelector('#txtlocal');
+      const permanentAddress = document.querySelector('#txtperm');
+      const button = document.querySelector('#togglebtn');
+      button.addEventListener('click', () => {
+        console.log(localAddress);
+        permanentAddress.value = localAddress.value;
+        localAddress.value = '';
+        button.textContent = '<';
+      });
+    </script>
+  </body>
+</html>
