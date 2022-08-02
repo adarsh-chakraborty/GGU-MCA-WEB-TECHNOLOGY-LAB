@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .h1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        padding: 0;
+        margin: 1rem 0 0.5rem 0;
+      }
+      .h2 {
+        padding: 0;
+        margin: 1rem 0 0.5rem 0;
+        font-size: 1rem;
+        font-weight: 400;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="h1" onclick="functionA(this)">Form Elements</p>
+    <form>
+      <p onclick="functionA(this)" class="h2">
+        Please enter all the required details.
+      </p>
+      <input
+        type="text"
+        name="sometext"
+        id="textid"
+        onclick="functionA(this)"
+      />
+      <input
+        type="checkbox"
+        value="Checkbox1"
+        name="checkbox1"
+        onclick="functionA(this)"
+      />
+      <input
+        type="checkbox"
+        value="Checkbox2"
+        name="checkbox2"
+        onclick="functionA(this)"
+      />
+      <button onclick="functionA(this)">Submit</button>
+      <button onclick="functionA(this)">Reset</button>
+    </form>
+    <script>
+      function functionA(clickedItem) {
+        console.log(clickedItem.style);
+        const style = getComputedStyle(clickedItem);
+
+        console.log(style);
+        alert(
+          `Clicked tag: ${clickedItem.tagName}\nClicked Content: ${
+            clickedItem.innerHTML
+          }\nClicked Value: ${
+            clickedItem.value
+          }\nClicked Style: ${JSON.stringify(style)}`
+        );
+      }
+    </script>
+  </body>
+</html>
