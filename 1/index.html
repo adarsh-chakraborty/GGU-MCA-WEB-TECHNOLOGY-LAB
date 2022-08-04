@@ -27,7 +27,12 @@
         // Add the numbers
         const sum = parseInt(n1) + parseInt(n2);
         // Display the result
-        result.innerHTML = 'Sum of ' + n1 + ' and ' + n2 + ' is ' + sum;
+
+        if (sum) {
+          result.innerHTML = 'Sum of ' + n1 + ' and ' + n2 + ' is ' + sum;
+          return;
+        }
+        alert('Please enter valid numbers');
       });
     </script>
   </body>

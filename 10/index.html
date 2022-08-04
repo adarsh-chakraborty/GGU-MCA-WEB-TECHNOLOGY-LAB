@@ -41,9 +41,15 @@
       const button = document.querySelector('#togglebtn');
       button.addEventListener('click', () => {
         console.log(localAddress);
-        permanentAddress.value = localAddress.value;
-        localAddress.value = '';
-        button.textContent = '<';
+
+        if (localAddress.value === '') {
+          button.textContent = '>';
+          permanentAddress.value = '';
+        } else {
+          permanentAddress.value = localAddress.value;
+          localAddress.value = '';
+          button.textContent = '<';
+        }
       });
     </script>
   </body>
