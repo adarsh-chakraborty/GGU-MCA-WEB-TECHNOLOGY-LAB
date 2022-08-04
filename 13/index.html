@@ -8,38 +8,188 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&family=Uchen&display=swap"
       rel="stylesheet"
     />
-    <title>Practical 13</title>
+    <title>Bubbling and Capturing</title>
     <style>
-      a {
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      li {
-        list-style: none;
+      div {
+        transition: all 0.5s;
+        transition-timing-function: ease-in-out;
       }
       body {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        margin: 0;
+        min-height: 100vh;
         font-family: 'Poppins', sans-serif;
       }
+      body,
+      div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .grandparent {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+      }
 
-      .links {
+      .parent {
+        width: 130px;
+        height: 130px;
+        background-color: blue;
+      }
+
+      .child {
+        width: 60px;
+        height: 60px;
+        background-color: green;
+      }
+
+      .clicked {
+        background-color: #ddd;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px,
+          rgb(51, 51, 51) 0px 0px 0px 3px;
+      }
+
+      .container {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        gap: 2rem;
+      }
+
+      .controls {
+        display: flex;
+        gap: 1rem;
       }
     </style>
   </head>
   <body>
-    <h2>Event Bubbling and Capturing</h2>
+    <div class="container">
+      <div class="grandparent" id="grandparent">
+        <div class="parent" id="parent">
+          <div class="child" id="child"></div>
+        </div>
+      </div>
 
-    <div class="links">
-      <a href="bubbling.html">1. Event Bubbling</a>
-      <a href="capturing.html">2. Event Capturing</a>
+      <div class="controls">
+        <label
+          >Event Bubbling:<input
+            type="radio"
+            name="choice"
+            id="bubble"
+            value="bubble"
+            checked
+        /></label>
+        <label
+          >Event Capturing:<input
+            type="radio"
+            name="choice"
+            id="capture"
+            value="capture"
+        /></label>
+      </div>
     </div>
+
+    <script>
+      let bubbling = true;
+      const grandparent = document.querySelector('.grandparent');
+      const parent = document.querySelector('.parent');
+      const child = document.querySelector('.child');
+
+      // Same Event Listener for element
+      const radiobtn1 = document.querySelector('#bubble');
+      const radiobtn2 = document.querySelector('#capture');
+      radiobtn1.addEventListener('change', optionChangeListener);
+      radiobtn2.addEventListener('change', optionChangeListener);
+
+      function grandParentEventHandler(e) {
+        console.log(e.eventPhase);
+        console.log('grandparent');
+        // capturing 500; 900
+        grandparent.classList.add('clicked');
+        setTimeout(
+          () => {
+            grandparent.classList.remove('clicked');
+          },
+          bubbling ? 900 : 500
+        );
+      }
+
+      function parentEventHandler(e) {
+        parent.classList.add('clicked');
+        // capturing 800; 600
+
+        console.log('parent');
+        setTimeout(
+          () => {
+            parent.classList.remove('clicked');
+          },
+          bubbling ? 600 : 800
+        );
+      }
+
+      function childEventHandler(e) {
+        // capturing 1000; 300
+        child.classList.add('clicked');
+        console.log('child');
+
+        setTimeout(
+          () => {
+            child.classList.remove('clicked');
+          },
+          bubbling ? 300 : 1000
+        );
+      }
+
+      function optionChangeListener(e) {
+        setupEventListeners(e.target.value);
+      }
+
+      function setupEventListeners(type) {
+        switch (type) {
+          case 'bubble': {
+            bubbling = true;
+            // Remove capturing event
+            grandparent.removeEventListener(
+              'click',
+              grandParentEventHandler,
+              true
+            );
+            parent.removeEventListener('click', parentEventHandler, true);
+            child.removeEventListener('click', childEventHandler, true);
+
+            // Add bubble event
+            grandparent.addEventListener('click', grandParentEventHandler);
+            parent.addEventListener('click', parentEventHandler);
+            child.addEventListener('click', childEventHandler);
+            break;
+          }
+          case 'capture': {
+            bubbling = false;
+
+            // Remove bubbling event
+            grandparent.removeEventListener('click', grandParentEventHandler);
+            parent.removeEventListener('click', parentEventHandler);
+            child.removeEventListener('click', childEventHandler);
+
+            // Add bubble event
+            grandparent.addEventListener(
+              'click',
+              grandParentEventHandler,
+              true
+            );
+            parent.addEventListener('click', parentEventHandler, true);
+            child.addEventListener('click', childEventHandler, true);
+            break;
+          }
+          default: {
+            grandparent.addEventListener('click', grandParentEventHandler);
+            parent.addEventListener('click', parentEventHandler);
+            child.addEventListener('click', childEventHandler);
+            break;
+          }
+        }
+      }
+
+      setupEventListeners();
+    </script>
   </body>
 </html>
