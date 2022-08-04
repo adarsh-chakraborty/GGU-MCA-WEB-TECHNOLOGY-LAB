@@ -27,7 +27,7 @@ if(isset($_POST['text']) && isset($_POST['key'])){
   echo "<h2>Session Values</h2>";
   echo "<ul>";
   foreach ($_SESSION as $key => $value) {
-    echo "<li>$key: $value</li>";
+    print_r("<li>$key: $value</li>");
   }
   echo "</ul>";
 

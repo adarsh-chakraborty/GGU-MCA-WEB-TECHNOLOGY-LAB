@@ -25,7 +25,15 @@ if (isset($_POST['chk1'])) {
 
 if(isset($_POST['newname'])){
   // add the new name to the array.
-  array_push($_SESSION['names'], $_POST['newname']);
+
+  // check if the name is already in the array.
+  if(in_array($_POST['newname'], $_SESSION['names'])){
+    echo "<h2 class='red'>Name already exists</h2>";
+  } else {
+    // add the name to the array.
+    array_push($_SESSION['names'], $_POST['newname']);
+    echo "<h2>Name added</h2>";
+  }
 }
 
 // check if names contains any item.
@@ -56,6 +64,9 @@ if(count($_SESSION['names']) > 0){
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Add Name</title>
   <style>
+    .red{
+      color: red;
+    }
     .listnames{
       display: flex;
       flex-direction: column;
