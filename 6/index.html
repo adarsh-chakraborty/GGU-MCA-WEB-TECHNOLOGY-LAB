@@ -38,43 +38,60 @@
     </style>
   </head>
   <body>
-    <h2>Dynamic Table</h2>
-    <input type="text" id="content" /> <button id="addrow">Add New Row</button>
-
-    <table id="table">
-      <tr>
-        <th>S.No</th>
-        <th>Content</th>
-        <th>Action</th>
-      </tr>
-    </table>
+    <table id="table"></table>
 
     <script>
+      let tableData = [];
+
       const content = document.querySelector('#content');
       const table = document.querySelector('#table');
       const addrow = document.querySelector('#addrow');
-      let count = 0;
-      addrow.addEventListener('click', () => {
-        const row = document.createElement('tr');
-        const sno = document.createElement('td');
-        const contentNode = document.createElement('td');
-        const action = document.createElement('td');
-        const delbtn = document.createElement('button');
-        delbtn.textContent = 'Delete Row';
-        delbtn.onclick = delRow.bind(null, row);
-        action.appendChild(delbtn);
-        sno.textContent = count + 1;
-        contentNode.textContent = content.value;
-        row.appendChild(sno);
-        row.appendChild(contentNode);
-        row.appendChild(action);
-        table.appendChild(row);
-        count++;
-      });
 
-      function delRow(row) {
-        table.removeChild(row);
+      function renderTable() {
+        let html = ` <tr>
+        <th>S.No</th>
+        <th>Content</th>
+        <th>Action</th>
+      </tr>`;
+
+        for (let [index, value] of tableData.entries()) {
+          html += `<tr>
+            <td>${index + 1}</td>
+            <td>${value}</td>
+            <td><button class="deletebtn" onClick="delRow(${index})">Delete</button></td>
+            </tr>`;
+        }
+
+        html += `<tr>
+        <td>*</td>
+        <td>
+          <input
+            type="text"
+            style="width: 80%"
+            placeholder="Enter text content here"
+          />
+        </td>
+        <td><button onClick="addRow()">Add</button></td>
+      </tr>`;
+
+        table.innerHTML = html;
       }
+
+      function delRow(i) {
+        tableData = tableData.filter((item, index) => index !== i);
+        renderTable();
+      }
+
+      function addRow() {
+        const input = document.querySelector('input');
+        const value = input.value.trim();
+
+        tableData.push(value);
+        input.value = '';
+        renderTable();
+      }
+
+      renderTable();
     </script>
   </body>
 </html>

@@ -1,25 +1,48 @@
 <?php
+// start session
+session_start();
 // get search and new item from post request.
 
 
 // search for $search in $items array.
-$items = array('Apple', 'Banana', 'Orange', 'Pear', 'Grape');
 
-if(isset($_POST['search'])){
+// get items from session or initialize empty array.
+$items = isset($_SESSION['items']) ? $_SESSION['items'] : array('Apple', 'Banana', 'Orange', 'Pear', 'Grape');
+
+
+if(isset($_POST['finddel'])){
+  $search = $_POST['finddel'];
+
+  $key = array_search($search, $items);
+  if($key !== false){
+    
+    // delete item from array.
+    unset($items[$key]);
+    // save the array back to session.
+    $_SESSION['items'] = $items;
+  
+    
+    echo "<strong>* Item was found and deleted.</strong>";
+  } else {
+    echo "<strong>Item not found in array!</strong>";
+  }
+}
+
+if(isset($_POST['newitem']) && isset($_POST['search'])){
   $search = $_POST['search'];
   $newItem = $_POST['newitem'];
 
   $key = array_search($search, $items);
   if($key !== false){
-    // Why not just replace the item???
-    $items[$key] = $newItem;
-    // deleting
-    // unset($items[$key]);
-    // $items = array_values($items); // reindexing
     
-    echo "<strong>Item found!</strong>";
+    // put new item after the key.
+    array_splice($items, $key + 1, 0, $newItem); 
+    $_SESSION['items'] = $items;
+
+    
+    echo "<strong>* Item found! New item added next to it.</strong>";
   } else {
-    echo "<strong>Item not found!</strong>";
+    echo "<strong>Item not found in array!</strong>";
   }
 }
 
@@ -35,9 +58,8 @@ if(isset($_POST['search'])){
   <title>Document</title>
 </head>
 <body>
-  <h2>Search and Delete item from array</h2>
   <?php
-  echo "Items in the array:";
+  echo "<h2>Items in the array:</h2>";
   # print items in a list
   echo '<ul>';
   foreach ($items as $item) {
@@ -45,11 +67,18 @@ if(isset($_POST['search'])){
   }
   echo '</ul>';
   ?>
+  <h2>Find and Delete item from array</h2>
+  <form action="/php-practicals/7.php" method="post">
+    <input type="text" name="finddel" placeholder="Search" required>
+    
+    <input type="submit" name="submit" value="Search">
+  </form>
+  
+  <h2>Find and Insert new item next to the array.</h2>
   <form action="/php-practicals/7.php" method="post">
     <input type="text" name="search" placeholder="Search" required>
-    <p>Another Item to add in the array if found</p>
     <input type="text" name="newitem" placeholder="New Item" required>
     <input type="submit" name="submit" value="Search">
   </form>
-</body>
+  </body>
 </html>
